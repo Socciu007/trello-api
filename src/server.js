@@ -3,15 +3,20 @@ import exitHook from 'async-exit-hook'
 import { env } from '@/config/environment'
 import { CLOSE_DB, CONNECT_DB } from '@/config/mongodb'
 import { APIs_V1 } from './routes/v1'
-
-(async () => {
+import { handleError } from './middlewares/handleError.middleware'
+;(async () => {
   try {
     const app = express()
 
+    // Middleware configuration
+    app.use(express.json())
+
     CONNECT_DB()
-    console.log('Connect MongoDB sussfully')
+    console.log('Connect MongoDB sucessfully')
 
     app.use('/v1', APIs_V1)
+
+    app.use(handleError)
 
     app.listen(env.APP_PORT, env.APP_HOST, () => {
       console.log(`Hello Tien, Starting server on port ${env.APP_PORT}`)

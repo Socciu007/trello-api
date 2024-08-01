@@ -1,15 +1,23 @@
 import { StatusCodes } from 'http-status-codes'
 import Joi from 'joi'
 
-const schemaBoard = Joi.object({
-  title: Joi.string().required().min(3).max(50),
-  description: Joi.string().required().min(3).max(256)
-})
-
-const createBoard = (req, res, next) => {
-  const { title, description } = req.body
-  if (!title || !description) {
-    return res.status(400).json({ error: 'Title and description are required' })
+const checkCreateBoard = async (req, res, next) => {
+  const conditionBoard = Joi.object({
+    title: Joi.string().required().min(3).max(50).trim().strict(),
+    description: Joi.string().required().min(3).max(256).trim().strict()
+  })
+  try {
+    // check conditions to create board
+    await conditionBoard.validateAsync(req.body, { abortEarly: false })
+    next()
+  } catch (error) {
+    res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({
+      status: 0,
+      message: new Error(error).message
+    })
   }
-  res.status(StatusCodes.CREATED).json({ message: 'Board created', title, description })
+}
+
+export const boardValidation = {
+  checkCreateBoard
 }
