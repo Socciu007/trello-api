@@ -1,3 +1,4 @@
+import ApiError from '@/utils/ApiError'
 import { StatusCodes } from 'http-status-codes'
 import Joi from 'joi'
 
@@ -11,10 +12,11 @@ const checkCreateBoard = async (req, res, next) => {
     await conditionBoard.validateAsync(req.body, { abortEarly: false })
     next()
   } catch (error) {
-    res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({
-      status: 0,
-      message: new Error(error).message
-    })
+    const customError = ApiError(
+      StatusCodes.UNPROCESSABLE_ENTITY,
+      new Error(error).message
+    )
+    next(customError)
   }
 }
 

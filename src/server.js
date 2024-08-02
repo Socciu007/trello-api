@@ -4,6 +4,8 @@ import { env } from '@/config/environment'
 import { CLOSE_DB, CONNECT_DB } from '@/config/mongodb'
 import { APIs_V1 } from './routes/v1'
 import { handleError } from './middlewares/handleError.middleware'
+
+// Entry point for the application. Initialize Express, connect to MongoDB, and set up routes.
 ;(async () => {
   try {
     const app = express()
