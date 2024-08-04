@@ -12,7 +12,7 @@ const checkCreateBoard = async (req, res, next) => {
     await conditionBoard.validateAsync(req.body, { abortEarly: false })
     next()
   } catch (error) {
-    const customError = ApiError(
+    const customError = new ApiError(
       StatusCodes.UNPROCESSABLE_ENTITY,
       new Error(error).message
     )

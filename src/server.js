@@ -6,7 +6,7 @@ import { APIs_V1 } from './routes/v1'
 import { handleError } from './middlewares/handleError.middleware'
 
 // Entry point for the application. Initialize Express, connect to MongoDB, and set up routes.
-;(async () => {
+(async () => {
   try {
     const app = express()
 
@@ -14,7 +14,7 @@ import { handleError } from './middlewares/handleError.middleware'
     app.use(express.json())
 
     CONNECT_DB()
-    console.log('Connect MongoDB sucessfully')
+    console.log('Connect MongoDB successfully')
 
     app.use('/v1', APIs_V1)
 

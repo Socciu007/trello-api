@@ -1,3 +1,4 @@
+import { env } from '@/config/environment'
 import { StatusCodes } from 'http-status-codes'
 
 export const handleError = (err, req, res, next) => {
@@ -8,8 +9,11 @@ export const handleError = (err, req, res, next) => {
   const responseError = {
     statusCode: err.statusCode,
     message: err.message || StatusCodes[err.statusCode],
-    stack: process.env.NODE_ENV === 'development' ? err.stack : null
+    stack: err.stack
   }
+
+  // Remove stack attribute in error response if not development environment
+  if (env.NODE_ENV !== 'development') delete responseError.stack
 
   // Send error response to client
   res.status(responseError.statusCode).json(responseError)

@@ -1,19 +1,16 @@
+import { boardService } from '@/services/board.service'
+
 const { StatusCodes } = require('http-status-codes')
 
 // Handle POST API requests create board
-const createBoard = async (req, res) => {
+const createBoard = async (req, res, next) => {
   try {
-    console.log(req.body)
-    res.status(StatusCodes.CREATED).json({
-      status: 1,
-      message: 'Create board successfully',
-      data: req.body
-    })
+    const response = await boardService.createBoard(req.body)
+    console.log(response)
+
+    res.status(StatusCodes.CREATED).json(response)
   } catch (error) {
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      status: 0,
-      message: new Error(error).message
-    })
+    next(error)
   }
 }
 
