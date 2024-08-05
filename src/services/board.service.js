@@ -1,4 +1,4 @@
-import { slugify } from "@/utils"
+import { slugify } from '@/utils'
 
 const createBoard = async (bodyBoard) => {
   try {
@@ -8,7 +8,9 @@ const createBoard = async (bodyBoard) => {
     }
 
     return newBoard
-  } catch (error) { throw error }
+  } catch (error) {
+    throw Error(error)
+  }
 }
 
 export const boardService = {
