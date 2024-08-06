@@ -15,4 +15,8 @@ const slugify = (str) => {
 const OBJECT_ID_RULE = /^[0-9a-fA-F]{24}$/
 const OBJECT_ID_RULE_MSG = 'Your string fails to match the Object Id pattern!'
 
-export { slugify, OBJECT_ID_RULE, OBJECT_ID_RULE_MSG }
+// List of domains that the server allows access to
+const WHITELIST_DOMAINS = [
+  'http://localhost:5173/'
+]
+export { slugify, OBJECT_ID_RULE, OBJECT_ID_RULE_MSG, WHITELIST_DOMAINS}

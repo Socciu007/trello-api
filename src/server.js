@@ -1,17 +1,20 @@
 import express from 'express'
 import exitHook from 'async-exit-hook'
+import cors from 'cors'
 import { env } from '@/config/environment'
 import { CLOSE_DB, CONNECT_DB } from '@/config/mongodb'
 import { APIs_V1 } from './routes/v1'
 import { handleError } from './middlewares/handleError.middleware'
+import { corsOptions } from './config/cors'
 
 // Entry point for the application. Initialize Express, connect to MongoDB, and set up routes.
-(async () => {
+;(async () => {
   try {
     const app = express()
 
     // Middleware configuration
     app.use(express.json())
+    app.use(cors(corsOptions))
 
     CONNECT_DB()
     console.log('Connect MongoDB successfully')

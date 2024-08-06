@@ -6,7 +6,6 @@ const { StatusCodes } = require('http-status-codes')
 const createBoard = async (req, res, next) => {
   try {
     const response = await boardService.createBoard(req.body)
-    console.log(response)
 
     res.status(StatusCodes.CREATED).json(response)
   } catch (error) {
@@ -14,6 +13,19 @@ const createBoard = async (req, res, next) => {
   }
 }
 
+// Handle GET API requests get board by id
+const getDetailBoard = async (req, res, next) => {
+  try {
+    const boardId = req.params.id
+    const response = await boardService.getDetailBoard(boardId)
+
+    res.status(StatusCodes.OK).json(response)
+  } catch (error) {
+    next(error)
+  }
+}
+
 export const boardController = {
-  createBoard
+  createBoard,
+  getDetailBoard
 }

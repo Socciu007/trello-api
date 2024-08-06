@@ -22,6 +22,7 @@ const validateBeforeCreate = async (data) => {
   return await BOARD_COLLECTION_SCHEMA.validateAsync(data, { abortEarly: false })
 }
 
+// Create a new board in boards table
 const createBoard = async (data) => {
   try {
     const valData = await validateBeforeCreate(data)
@@ -31,7 +32,17 @@ const createBoard = async (data) => {
   }
 }
 
+// Query one items in boards table by id
 const findOneBoardById = async (id) => {
+  try {
+    return await GET_DB().collection(BOARD_COLLECTION_NAME).findOne({ _id: new ObjectId(id) })
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+// Query
+const getDetailBoard = async (id) => {
   try {
     return await GET_DB().collection(BOARD_COLLECTION_NAME).findOne({ _id: new ObjectId(id) })
   } catch (error) {
@@ -43,5 +54,6 @@ export const boardModel = {
   BOARD_COLLECTION_NAME,
   BOARD_COLLECTION_SCHEMA,
   createBoard,
-  findOneBoardById
+  findOneBoardById,
+  getDetailBoard
 }
