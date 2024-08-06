@@ -11,7 +11,7 @@ const createBoard = async (bodyBoard) => {
     const createdBoard = await boardModel.createBoard(newBoard)
 
     const getNewBoard = await boardModel.findOneBoardById(
-      createdBoard.insertedId
+      createdBoard.insertedId.toString()
     )
 
     return getNewBoard
