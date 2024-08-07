@@ -19,4 +19,11 @@ const OBJECT_ID_RULE_MSG = 'Your string fails to match the Object Id pattern!'
 const WHITELIST_DOMAINS = [
   'http://localhost:5173/'
 ]
-export { slugify, OBJECT_ID_RULE, OBJECT_ID_RULE_MSG, WHITELIST_DOMAINS}
+
+// Valid types of board
+const BOARD_TYPES = {
+  PUBLIC: 'public',
+  PRIVATE: 'private'
+}
+
+export { slugify, OBJECT_ID_RULE, OBJECT_ID_RULE_MSG, WHITELIST_DOMAINS, BOARD_TYPES }

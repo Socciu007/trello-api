@@ -2,6 +2,7 @@ import { boardModel } from '@/models/boards'
 import { slugify } from '@/utils'
 import ApiError from '@/utils/ApiError'
 import { StatusCodes } from 'http-status-codes'
+import { cloneDeep } from 'lodash'
 
 // Logic create new board
 const createBoard = async (bodyBoard) => {
@@ -34,10 +35,17 @@ const getDetailBoard = async (id) => {
 
     if (!board) throw new ApiError(StatusCodes.NOT_FOUND, 'Board is not found!')
 
+    // Transform data get a board from board model
+    const resBoard = cloneDeep(board)
+    resBoard.columns.forEach(column => {
+      column.cards = resBoard.cards.filter(c => c.columnId.toString() === column._id.toString())
+    })
+    delete resBoard.cards
+
     return {
       'statusCode': 200,
       'message': 'Get board successfully!',
-      'data': board
+      'data': resBoard
     }
   } catch (error) {
     throw new Error(error)
