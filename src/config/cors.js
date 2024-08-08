@@ -7,7 +7,7 @@ import { StatusCodes } from 'http-status-codes'
 export const corsOptions = {
   origin: function (origin, callback) {
     //
-    if (!origin && env.BUILD_MODE === 'development') {
+    if (!origin && env.NODE_ENV === 'development') {
       return callback(null, true)
     }
 
@@ -17,7 +17,12 @@ export const corsOptions = {
     }
 
     // Return error if it is reject
-    return callback(new ApiError(StatusCodes.FORBIDDEN, `${origin} not allowed by our CORS Policy.`))
+    return callback(
+      new ApiError(
+        StatusCodes.FORBIDDEN,
+        `${origin} not allowed by our CORS Policy.`
+      )
+    )
   },
 
   // Some legacy browsers (IE11, various SmartTVs) choke on 204

@@ -13,7 +13,7 @@ Router.route('/')
   .post(columnValidation.checkColumn, columnController.createColumn)
 
 Router.route('/:id')
-  .get(columnController.getDetailBoard)
+  .get()
   .put()
   .delete()
 

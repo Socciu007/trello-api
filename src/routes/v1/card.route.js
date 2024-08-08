@@ -12,7 +12,7 @@ Router.route('/')
   .post(cardValidation.checkCard, cardController.createCard)
 
 Router.route('/:id')
-  .get(cardController.getDetails)
+  .get()
   .put()
   .delete()
 
