@@ -27,6 +27,10 @@ const validateBeforeCreate = async (data) => {
 const createColumn = async (data) => {
   try {
     const valData = await validateBeforeCreate(data)
+
+    // Transform some fields of columns into Object ID type
+    valData.boardId = new ObjectId(data.boardId)
+
     return GET_DB().collection(COLUMN_COLLECTION_NAME).insertOne(valData)
   } catch (error) {
     throw new Error(error)
@@ -41,9 +45,25 @@ const findOneColumnById = async (id) => {
   }
 }
 
+// Update cardOrderIds field of column table when created a new card
+const updateFieldCardOrderIds = async (card) => {
+  try {
+    const result = await GET_DB().collection(COLUMN_COLLECTION_NAME).findOneAndUpdate(
+      { _id: new ObjectId(card.columnId) },
+      { $push: { cardOrderIds: card._id } },
+      { returnDocument: 'after' }
+    )
+
+    return result.value
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
 export const columnModel = {
   COLUMN_COLLECTION_NAME,
   COLUMN_COLLECTION_SCHEMA,
   createColumn,
-  findOneColumnById
+  findOneColumnById,
+  updateFieldCardOrderIds
 }

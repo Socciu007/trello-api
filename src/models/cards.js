@@ -14,7 +14,6 @@ const CARD_COLLECTION_SCHEMA = Joi.object({
     .required()
     .pattern(OBJECT_ID_RULE)
     .message(OBJECT_ID_RULE_MSG),
-
   title: Joi.string().required().min(3).max(50).trim().strict(),
   description: Joi.string().optional(),
 
@@ -30,6 +29,11 @@ const validateBeforeCreate = async (data) => {
 const createCard = async (data) => {
   try {
     const valData = await validateBeforeCreate(data)
+
+    // Transform some fields of cards into Object ID type
+    valData.boardId = new ObjectId(valData.boardId)
+    valData.columnId = new ObjectId(valData.columnId)
+
     return await GET_DB().collection(CARD_COLLECTION_NAME).insertOne(valData)
   } catch (error) {
     throw new Error(error)

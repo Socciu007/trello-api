@@ -3,7 +3,7 @@ import ApiError from '@/utils/ApiError'
 import { StatusCodes } from 'http-status-codes'
 import Joi from 'joi'
 
-const checkCreateBoard = async (req, res, next) => {
+const checkBoard = async (req, res, next) => {
   const conditionBoard = Joi.object({
     title: Joi.string().required().min(3).max(50).trim().strict(),
     description: Joi.string().required().min(3).max(256).trim().strict(),
@@ -23,5 +23,5 @@ const checkCreateBoard = async (req, res, next) => {
 }
 
 export const boardValidation = {
-  checkCreateBoard
+  checkBoard
 }

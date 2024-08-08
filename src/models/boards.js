@@ -78,10 +78,26 @@ const getDetailBoard = async (id) => {
   }
 }
 
+// Update columnOrderIds field when created a new column
+const updateFieldColumnOrderIds = async (column) => {
+  try {
+    const result = await GET_DB().collection(BOARD_COLLECTION_NAME).findOneAndUpdate(
+      { _id: new ObjectId(column.boardId) },
+      { $push: { columnOrderIds: column._id } },
+      { returnDocument: 'after' }
+    )
+
+    return result.value
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
 export const boardModel = {
   BOARD_COLLECTION_NAME,
   BOARD_COLLECTION_SCHEMA,
   createBoard,
   findOneBoardById,
-  getDetailBoard
+  getDetailBoard,
+  updateFieldColumnOrderIds
 }
