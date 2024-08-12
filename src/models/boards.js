@@ -47,7 +47,7 @@ const findOneBoardById = async (id) => {
 // Query
 const getDetailBoard = async (id) => {
   try {
-    const result = await GET_DB().collection(BOARD_COLLECTION_NAME).agregate([
+    const result = await GET_DB().collection(BOARD_COLLECTION_NAME).aggregate([
       {
         $match: {
           _id: new ObjectId(id),
