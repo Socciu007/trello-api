@@ -22,7 +22,9 @@ const BOARD_COLLECTION_SCHEMA = Joi.object({
 })
 
 const validateBeforeCreate = async (data) => {
-  return await BOARD_COLLECTION_SCHEMA.validateAsync(data, { abortEarly: false })
+  return await BOARD_COLLECTION_SCHEMA.validateAsync(data, {
+    abortEarly: false
+  })
 }
 
 // Create a new board in boards table
@@ -38,7 +40,9 @@ const createBoard = async (data) => {
 // Query one items in boards table by id
 const findOneBoardById = async (id) => {
   try {
-    return await GET_DB().collection(BOARD_COLLECTION_NAME).findOne({ _id: new ObjectId(id) })
+    return await GET_DB()
+      .collection(BOARD_COLLECTION_NAME)
+      .findOne({ _id: new ObjectId(id) })
   } catch (error) {
     throw new Error(error)
   }
@@ -47,32 +51,35 @@ const findOneBoardById = async (id) => {
 // Query
 const getDetailBoard = async (id) => {
   try {
-    const result = await GET_DB().collection(BOARD_COLLECTION_NAME).aggregate([
-      {
-        $match: {
-          _id: new ObjectId(id),
-          _destroy: false
+    const result = await GET_DB()
+      .collection(BOARD_COLLECTION_NAME)
+      .aggregate([
+        {
+          $match: {
+            _id: new ObjectId(id),
+            _destroy: false
+          }
+        },
+        {
+          $lookup: {
+            from: columnModel.COLUMN_COLLECTION_NAME,
+            localField: '_id',
+            foreignField: 'boardId',
+            as: 'columns'
+          }
+        },
+        {
+          $lookup: {
+            from: cardModel.CARD_COLLECTION_NAME,
+            localField: '_id',
+            foreignField: 'boardId',
+            as: 'cards'
+          }
         }
-      },
-      {
-        $lookup: {
-          from: columnModel.COLUMN_COLLECTION_NAME,
-          localField: '_id',
-          foreignField: 'boardId',
-          as: 'columns'
-        }
-      },
-      {
-        $lookup: {
-          from: cardModel.CARD_COLLECTION_NAME,
-          localField: '_id',
-          foreignField: 'boardId',
-          as: 'cards'
-        }
-      }
-    ]).toArray()
+      ])
+      .toArray()
 
-    return result[0] || {}
+    return result[0] || null
   } catch (error) {
     throw new Error(error)
   }
@@ -81,11 +88,13 @@ const getDetailBoard = async (id) => {
 // Update columnOrderIds field when created a new column
 const updateFieldColumnOrderIds = async (column) => {
   try {
-    const result = await GET_DB().collection(BOARD_COLLECTION_NAME).findOneAndUpdate(
-      { _id: new ObjectId(column.boardId) },
-      { $push: { columnOrderIds: column._id } },
-      { returnDocument: 'after' }
-    )
+    const result = await GET_DB()
+      .collection(BOARD_COLLECTION_NAME)
+      .findOneAndUpdate(
+        { _id: new ObjectId(column.boardId) },
+        { $push: { columnOrderIds: column._id } },
+        { returnDocument: 'after' }
+      )
 
     return result.value
   } catch (error) {
