@@ -13,6 +13,18 @@ const createBoard = async (req, res, next) => {
   }
 }
 
+// Handle POST API requests update board
+const updateBoard = async (req, res, next) => {
+  try {
+    const boardId = req.params.id
+    const response = await boardService.updateBoard(boardId, req.body)
+
+    res.status(StatusCodes.OK).json(response)
+  } catch (error) {
+    next(error)
+  }
+}
+
 // Handle GET API requests get board by id
 const getDetailBoard = async (req, res, next) => {
   try {
@@ -27,5 +39,6 @@ const getDetailBoard = async (req, res, next) => {
 
 export const boardController = {
   createBoard,
-  getDetailBoard
+  getDetailBoard,
+  updateBoard
 }

@@ -1,5 +1,5 @@
 import { GET_DB } from '@/config/mongodb'
-import { OBJECT_ID_RULE, OBJECT_ID_RULE_MSG } from '@/utils'
+import { INVALID_UPDATE_FIELDS, OBJECT_ID_RULE, OBJECT_ID_RULE_MSG } from '@/utils'
 import Joi from 'joi'
 import { ObjectId } from 'mongodb'
 
@@ -54,7 +54,27 @@ const updateFieldCardOrderIds = async (card) => {
       { returnDocument: 'after' }
     )
 
-    return result.value
+    return result
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+// Update field of column table when move card in the same column
+const updateColumn = async (id, updateData) => {
+  try {
+    Object.keys(updateData).forEach(field => {
+      if (INVALID_UPDATE_FIELDS.includes(field)) {
+        delete updateData[field]
+      }
+    })
+    const result = await GET_DB().collection(COLUMN_COLLECTION_NAME).findOneAndUpdate(
+      { _id: new ObjectId(id) },
+      { $set: updateData },
+      { returnDocument: 'after' }
+    )
+
+    return result
   } catch (error) {
     throw new Error(error)
   }
@@ -65,5 +85,6 @@ export const columnModel = {
   COLUMN_COLLECTION_SCHEMA,
   createColumn,
   findOneColumnById,
-  updateFieldCardOrderIds
+  updateFieldCardOrderIds,
+  updateColumn
 }

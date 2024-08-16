@@ -31,6 +31,26 @@ const createColumn = async (reqBody) => {
   }
 }
 
+// Logic update column whwn move card in the same column
+const updateColumn = async (id, bodyColumn) => {
+  try {
+    const newColumn = {
+      ...bodyColumn,
+      updatedAt: Date.now()
+    }
+
+    const updatedColumn = await columnModel.updateColumn(id, newColumn)
+
+    return {
+      'statusCode': 200,
+      'message': 'Update column successfully!',
+      'data': updatedColumn
+    }
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
 // Logic get board by id
 const getDetailColumn = async (id) => {
   try {
@@ -50,5 +70,6 @@ const getDetailColumn = async (id) => {
 
 export const columnService = {
   createColumn,
-  getDetailColumn
+  getDetailColumn,
+  updateColumn
 }

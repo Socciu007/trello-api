@@ -25,6 +25,31 @@ const checkColumn = async (req, res, next) => {
   }
 }
 
+const updateColumn = async (req, res, next) => {
+  const conditionColumn = Joi.object({
+    boardId: Joi.string()
+      .pattern(OBJECT_ID_RULE)
+      .message(OBJECT_ID_RULE_MSG),
+    title: Joi.string().min(3).max(50).trim().strict()
+  })
+
+  // Validate request body to create column
+  try {
+    await conditionColumn.validateAsync(req.body, {
+      abortEarly: false,
+      allowUnknown: true
+    })
+    next()
+  } catch (error) {
+    const customError = new ApiError(
+      StatusCodes.UNPROCESSABLE_ENTITY,
+      new Error(error).message
+    )
+    next(customError)
+  }
+}
+
 export const columnValidation = {
-  checkColumn
+  checkColumn,
+  updateColumn
 }

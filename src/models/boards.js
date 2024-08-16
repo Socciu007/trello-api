@@ -1,5 +1,5 @@
 import { GET_DB } from '@/config/mongodb'
-import { BOARD_TYPES, OBJECT_ID_RULE, OBJECT_ID_RULE_MSG } from '@/utils'
+import { BOARD_TYPES, INVALID_UPDATE_FIELDS, OBJECT_ID_RULE, OBJECT_ID_RULE_MSG } from '@/utils'
 import Joi from 'joi'
 import { ObjectId } from 'mongodb'
 import { columnModel } from './columns'
@@ -96,7 +96,30 @@ const updateFieldColumnOrderIds = async (column) => {
         { returnDocument: 'after' }
       )
 
-    return result.value
+    return result
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+// Update field when move column
+const updateFieldBoard = async (boardId, updateData) => {
+  try {
+    Object.keys(updateData).forEach(field => {
+      if (INVALID_UPDATE_FIELDS.includes(field)) {
+        delete updateData[field]
+      }
+    })
+
+    const result = await GET_DB()
+      .collection(BOARD_COLLECTION_NAME)
+      .findOneAndUpdate(
+        { _id: new ObjectId(boardId) },
+        { $set: updateData },
+        { returnDocument: 'after' }
+      )
+
+    return result
   } catch (error) {
     throw new Error(error)
   }
@@ -108,5 +131,6 @@ export const boardModel = {
   createBoard,
   findOneBoardById,
   getDetailBoard,
-  updateFieldColumnOrderIds
+  updateFieldColumnOrderIds,
+  updateFieldBoard
 }

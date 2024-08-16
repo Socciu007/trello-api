@@ -28,6 +28,26 @@ const createBoard = async (bodyBoard) => {
   }
 }
 
+// Logic update board
+const updateBoard = async (boardId, bodyBoard) => {
+  try {
+    const updateData = {
+      ...bodyBoard,
+      updateAt: Date.now()
+    }
+
+    const updatedBoard = await boardModel.updateFieldBoard(boardId, updateData)
+
+    return {
+      'statusCode': 201,
+      'message': 'Updated board successfully!',
+      'data': updatedBoard
+    }
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
 // Logic get board by id
 const getDetailBoard = async (id) => {
   try {
@@ -54,5 +74,6 @@ const getDetailBoard = async (id) => {
 
 export const boardService = {
   createBoard,
-  getDetailBoard
+  getDetailBoard,
+  updateBoard
 }
