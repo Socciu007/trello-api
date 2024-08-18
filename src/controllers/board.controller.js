@@ -13,7 +13,7 @@ const createBoard = async (req, res, next) => {
   }
 }
 
-// Handle POST API requests update board
+// Handle PUT API requests update board
 const updateBoard = async (req, res, next) => {
   try {
     const boardId = req.params.id
@@ -37,8 +37,20 @@ const getDetailBoard = async (req, res, next) => {
   }
 }
 
+// Handle PUT API requests support update data move card in two different column
+const updateDataMoveCard = async (req, res, next) => {
+  try {
+    const response = await boardService.updateDataMoveCard(req.body)
+
+    res.status(StatusCodes.OK).json(response)
+  } catch (error) {
+    next(error)
+  }
+}
+
 export const boardController = {
   createBoard,
   getDetailBoard,
-  updateBoard
+  updateBoard,
+  updateDataMoveCard
 }

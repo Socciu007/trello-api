@@ -17,6 +17,7 @@ const OBJECT_ID_RULE_MSG = 'Your string fails to match the Object Id pattern!'
 
 // Fields is not allowed update for board
 const INVALID_UPDATE_FIELDS = ['_id', 'createdAt']
+const INVALID_UPDATE_FIELDS_MORE = ['_id', 'createdAt', 'boardId']
 
 // List of domains that the server allows access to
 const WHITELIST_DOMAINS = ['http://localhost:5173']
@@ -32,6 +33,7 @@ export {
   OBJECT_ID_RULE,
   OBJECT_ID_RULE_MSG,
   INVALID_UPDATE_FIELDS,
+  INVALID_UPDATE_FIELDS_MORE,
   WHITELIST_DOMAINS,
   BOARD_TYPES
 }

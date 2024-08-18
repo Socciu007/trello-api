@@ -16,4 +16,8 @@ Router.route('/:id')
   .put(boardValidation.updateBoard, boardController.updateBoard)
   .delete()
 
+// Api support moving card between two different column
+Router.route('/support/moving_card')
+  .put(boardValidation.updateDataMoveCard, boardController.updateDataMoveCard)
+
 export const boardRoutes = Router

@@ -1,4 +1,6 @@
 import { boardModel } from '@/models/boards'
+import { cardModel } from '@/models/cards'
+import { columnModel } from '@/models/columns'
 import { slugify } from '@/utils'
 import ApiError from '@/utils/ApiError'
 import { StatusCodes } from 'http-status-codes'
@@ -72,8 +74,42 @@ const getDetailBoard = async (id) => {
   }
 }
 
+/*  Logic update data move card in two different column
+  1. Update prev column (delete card in prev column)
+  2. Update card in next column
+  3. Update column_id field in card */
+const updateDataMoveCard = async (reqBody) => {
+  try {
+    // Updated prev column
+    await columnModel.updateColumn(reqBody.prevColumnId, {
+      cardOrderIds: reqBody.prevCardOrderIds,
+      updatedAt: Date.now()
+    })
+
+    // Updated next column
+    await columnModel.updateColumn(reqBody.nextColumnId, {
+      cardOrderIds: reqBody.nextCardOrderIds,
+      updatedAt: Date.now()
+    })
+
+    // Updated card
+    await cardModel.updateFieldCard(reqBody.currentCardId, {
+      columnId: reqBody.nextColumnId,
+      updatedAt: Date.now()
+    })
+
+    return {
+      'statusCode': 201,
+      'message': 'Updated successfully!'
+    }
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
 export const boardService = {
   createBoard,
   getDetailBoard,
-  updateBoard
+  updateBoard,
+  updateDataMoveCard
 }

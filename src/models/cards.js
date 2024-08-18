@@ -1,5 +1,5 @@
 import Joi from 'joi'
-import { OBJECT_ID_RULE, OBJECT_ID_RULE_MSG } from '@/utils'
+import { INVALID_UPDATE_FIELDS_MORE, OBJECT_ID_RULE, OBJECT_ID_RULE_MSG } from '@/utils'
 import { GET_DB } from '@/config/mongodb'
 import { ObjectId } from 'mongodb'
 
@@ -48,9 +48,33 @@ const findOneCardById = async (id) => {
   }
 }
 
+// Update field columnId when move card in two column
+const updateFieldCard = async (cardId, updateData) => {
+  try {
+    Object.keys(updateData).forEach(field => {
+      if (INVALID_UPDATE_FIELDS_MORE.includes(field)) {
+        delete updateData[field]
+      }
+    })
+
+    const result = await GET_DB()
+      .collection(CARD_COLLECTION_NAME)
+      .findOneAndUpdate(
+        { _id: new ObjectId(cardId) },
+        { $set: updateData },
+        { returnDocument: 'after' }
+      )
+
+    return result
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
 export const cardModel = {
   CARD_COLLECTION_NAME,
   CARD_COLLECTION_SCHEMA,
   createCard,
-  findOneCardById
+  findOneCardById,
+  updateFieldCard
 }

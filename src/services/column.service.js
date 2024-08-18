@@ -31,7 +31,7 @@ const createColumn = async (reqBody) => {
   }
 }
 
-// Logic update column whwn move card in the same column
+// Logic update column when move card in the same column
 const updateColumn = async (id, bodyColumn) => {
   try {
     const newColumn = {
