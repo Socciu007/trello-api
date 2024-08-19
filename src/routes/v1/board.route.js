@@ -14,7 +14,7 @@ Router.route('/')
 Router.route('/:id')
   .get(boardController.getDetailBoard)
   .put(boardValidation.updateBoard, boardController.updateBoard)
-  .delete()
+  .delete(boardController.deleteBoard)
 
 // Api support moving card between two different column
 Router.route('/support/moving_card')

@@ -125,6 +125,18 @@ const updateFieldBoard = async (boardId, updateData) => {
   }
 }
 
+// Delete a board from boards table by id
+const deleteBoard = async (boardId) => {
+  try {
+    return await GET_DB().collection(BOARD_COLLECTION_NAME).deleteOne({
+      _id: new ObjectId(boardId),
+      _destroy: true
+    })
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
 export const boardModel = {
   BOARD_COLLECTION_NAME,
   BOARD_COLLECTION_SCHEMA,
@@ -132,5 +144,6 @@ export const boardModel = {
   findOneBoardById,
   getDetailBoard,
   updateFieldColumnOrderIds,
-  updateFieldBoard
+  updateFieldBoard,
+  deleteBoard
 }

@@ -68,8 +68,22 @@ const getDetailColumn = async (id) => {
   }
 }
 
+// Logic delete column by columnId
+const deleteColumn = async (columnId) => {
+  try {
+    await columnModel.deleteColumn(columnId)
+    return {
+      'statusCode': 200,
+      'message': 'Delete column successfully!'
+    }
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
 export const columnService = {
   createColumn,
   getDetailColumn,
-  updateColumn
+  updateColumn,
+  deleteColumn
 }

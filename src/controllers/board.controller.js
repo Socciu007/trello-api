@@ -48,9 +48,22 @@ const updateDataMoveCard = async (req, res, next) => {
   }
 }
 
+// Handle DELETE API requests delete board by id
+const deleteBoard = async (req, res, next) => {
+  try {
+    const boardId = req.params.id
+    const response = await boardService.deleteBoard(boardId)
+
+    res.status(StatusCodes.OK).json(response)
+  } catch (error) {
+    next(error)
+  }
+}
+
 export const boardController = {
   createBoard,
   getDetailBoard,
   updateBoard,
-  updateDataMoveCard
+  updateDataMoveCard,
+  deleteBoard
 }

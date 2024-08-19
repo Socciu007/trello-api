@@ -18,7 +18,19 @@ const updateColumn = async (req, res, next) => {
     const columnId = req.params.id
     const response = await columnService.updateColumn(columnId, req.body)
 
-    res.status(StatusCodes.CREATED).json(response)
+    res.status(StatusCodes.OK).json(response)
+  } catch (error) {
+    next(error)
+  }
+}
+
+// Handle DELETE API requests delete column
+const deleteColumn = async (req, res, next) => {
+  try {
+    const columnId = req.params.id
+    const response = await columnService.deleteColumn(columnId)
+
+    res.status(StatusCodes.OK).json(response)
   } catch (error) {
     next(error)
   }
@@ -26,5 +38,6 @@ const updateColumn = async (req, res, next) => {
 
 export const columnController = {
   createColumn,
-  updateColumn
+  updateColumn,
+  deleteColumn
 }

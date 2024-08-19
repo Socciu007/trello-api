@@ -107,9 +107,23 @@ const updateDataMoveCard = async (reqBody) => {
   }
 }
 
+// Logic delete a board
+const deleteBoard = async (id) => {
+  try {
+    await boardModel.deleteBoard(id)
+    return {
+      'statusCode': 200,
+      'message': 'Deleted board successfully!'
+    }
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
 export const boardService = {
   createBoard,
   getDetailBoard,
   updateBoard,
-  updateDataMoveCard
+  updateDataMoveCard,
+  deleteBoard
 }
