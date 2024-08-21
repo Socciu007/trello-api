@@ -1,4 +1,5 @@
 import { boardModel } from '@/models/boards'
+import { cardModel } from '@/models/cards'
 import { columnModel } from '@/models/columns'
 import ApiError from '@/utils/ApiError'
 import { StatusCodes } from 'http-status-codes'
@@ -71,10 +72,15 @@ const getDetailColumn = async (id) => {
 // Logic delete column by columnId
 const deleteColumn = async (columnId) => {
   try {
-    await columnModel.deleteColumn(columnId)
+    // Remove column by id
+    await columnModel.deleteOneById(columnId)
+
+    // Remove all cards in that column
+    await cardModel.deleteManyByColumnId(columnId)
+
     return {
       'statusCode': 200,
-      'message': 'Delete column successfully!'
+      'message': 'Delete column and its cards successfully!'
     }
   } catch (error) {
     throw new Error(error)

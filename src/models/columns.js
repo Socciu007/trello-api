@@ -100,11 +100,10 @@ const updateColumn = async (id, updateData) => {
 }
 
 // Delete column by id
-const deleteColumn = async (columnId) => {
+const deleteOneById = async (id) => {
   try {
     return await GET_DB().collection(COLUMN_COLLECTION_NAME).deleteOne({
-      _id: new ObjectId(columnId),
-      _destroy: true
+      _id: new ObjectId(id)
     })
   } catch (error) {
     throw new Error(error)
@@ -118,5 +117,5 @@ export const columnModel = {
   findOneColumnById,
   updateFieldCardOrderIds,
   updateColumn,
-  deleteColumn
+  deleteOneById
 }

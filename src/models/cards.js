@@ -71,10 +71,30 @@ const updateFieldCard = async (cardId, updateData) => {
   }
 }
 
+// Remove many cards by columnId
+const deleteManyByColumnId = async (columnId) => {
+  try {
+    return await GET_DB().collection(CARD_COLLECTION_NAME).deleteMany({ columnId: new ObjectId(columnId) })
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+// Remove a card by cardId
+const deleteOneById = async (id) => {
+  try {
+    return await GET_DB().collection(CARD_COLLECTION_NAME).deleteOne({ _id: new ObjectId(id) })
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
 export const cardModel = {
   CARD_COLLECTION_NAME,
   CARD_COLLECTION_SCHEMA,
   createCard,
   findOneCardById,
-  updateFieldCard
+  updateFieldCard,
+  deleteManyByColumnId,
+  deleteOneById
 }
