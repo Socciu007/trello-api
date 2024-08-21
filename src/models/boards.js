@@ -85,7 +85,7 @@ const getDetailBoard = async (id) => {
   }
 }
 
-// Update columnOrderIds field when created a new column
+// Update columnOrderIds field when created a new column (push columnId to columnOrderIds array)
 const updateFieldColumnOrderIds = async (column) => {
   try {
     const result = await GET_DB()
@@ -93,6 +93,23 @@ const updateFieldColumnOrderIds = async (column) => {
       .findOneAndUpdate(
         { _id: new ObjectId(column.boardId) },
         { $push: { columnOrderIds: column._id } },
+        { returnDocument: 'after' }
+      )
+
+    return result
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+// Pull columnId out to columnOrderIds array when remove column
+const pullColumnOrderIds = async (column) => {
+  try {
+    const result = await GET_DB()
+      .collection(BOARD_COLLECTION_NAME)
+      .findOneAndUpdate(
+        { _id: new ObjectId(column.boardId) },
+        { $pull: { columnOrderIds: column._id } },
         { returnDocument: 'after' }
       )
 
@@ -145,5 +162,6 @@ export const boardModel = {
   getDetailBoard,
   updateFieldColumnOrderIds,
   updateFieldBoard,
-  deleteBoard
+  deleteBoard,
+  pullColumnOrderIds
 }

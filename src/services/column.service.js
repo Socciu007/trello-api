@@ -72,11 +72,17 @@ const getDetailColumn = async (id) => {
 // Logic delete column by columnId
 const deleteColumn = async (columnId) => {
   try {
+    const targetColumn = await columnModel.findOneColumnById(columnId)
+    if (!targetColumn) throw new ApiError(StatusCodes.NOT_FOUND, 'Column is not found!')
+
     // Remove column by id
     await columnModel.deleteOneById(columnId)
 
     // Remove all cards in that column
     await cardModel.deleteManyByColumnId(columnId)
+
+    // Remove columnId out to columnOrderIds in board
+    await boardModel.pullColumnOrderIds(targetColumn)
 
     return {
       'statusCode': 200,
