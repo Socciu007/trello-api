@@ -8,7 +8,7 @@ import { handleError } from './middlewares/handleError.middleware'
 import { corsOptions } from './config/cors'
 
 // Entry point for the application. Initialize Express, connect to MongoDB, and set up routes.
-;(async () => {
+(async () => {
   try {
     const app = express()
 
@@ -23,9 +23,16 @@ import { corsOptions } from './config/cors'
 
     app.use(handleError)
 
-    app.listen(env.APP_PORT, env.APP_HOST, () => {
-      console.log(`Hello Tien, Starting server on port ${env.APP_PORT}`)
-    })
+    // Enable HTTPS for production environment (support Render.com)
+    if (env.NODE_ENV === 'production') {
+      app.listen(process.env.PORT, () => {
+        console.log(`Hello Tien, Starting server on port ${process.env.PORT}`)
+      })
+    } else { // Local dev
+      app.listen(env.APP_PORT, env.APP_HOST, () => {
+        console.log(`Hello Tien, Starting server on port ${env.APP_PORT}`)
+      })
+    }
 
     // Add exit hook to close MongoDB connection when app is terminated or stopped
     exitHook(() => {
