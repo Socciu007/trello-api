@@ -20,7 +20,10 @@ const INVALID_UPDATE_FIELDS = ['_id', 'createdAt']
 const INVALID_UPDATE_FIELDS_MORE = ['_id', 'createdAt', 'boardId']
 
 // List of domains that the server allows access to
-const WHITELIST_DOMAINS = ['http://localhost:5173']
+const WHITELIST_DOMAINS = [
+  'http://localhost:5173',
+  'https://trello-web-fawn.vercel.app'
+]
 
 // Valid types of board
 const BOARD_TYPES = {
